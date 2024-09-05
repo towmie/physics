@@ -1,4 +1,4 @@
-import { Canvas, useThree } from "@react-three/fiber";
+import { Canvas, useThree, extend } from "@react-three/fiber";
 import { Physics, RigidBody, CuboidCollider } from "@react-three/rapier";
 import {
   MeshTransmissionMaterial,
@@ -6,33 +6,44 @@ import {
   OrthographicCamera,
   RoundedBox,
   Text3D,
+  shaderMaterial,
 } from "@react-three/drei";
 import { useMemo, useRef } from "react";
 import { useControls } from "leva";
+import * as THREE from "three";
 
-// const boxesInfo = [
-//   {
-//     // link:'https://www.google.com',
-//     text: "ya",
-//     scale: [4, 3, 0.8],
-//     position: [-4, 4, 0],
-//   },
-//   {
-//     // link:'https://www.google.com',
-//     text: "fb",
-//     scale: [8, 5, 0.8],
-//     position: [4, -4, 0],
-//   },
-//   {
-//     // link:'https://www.google.com',
-//     text: "Google",
-//     scale: [3, 3, 0.8],
-//     position: [0, 1, 0],
-//   },
-// ];
+// Define the custom shader material
+const FrontFaceMaterial = shaderMaterial(
+  {
+    frontColor: new THREE.Color(0x0000ff),
+    backColor: new THREE.Color(0xffffff),
+  },
+  // vertex shader
+  `
+    varying vec3 vNormal;
+    void main() {
+      vNormal = normalize(normalMatrix * normal);
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+  `,
+  // fragment shader
+  `
+    uniform vec3 frontColor;
+    uniform vec3 backColor;
+    varying vec3 vNormal;
+    void main() {
+      float facing = dot(vNormal, vec3(0.0, 0.0, 1.0));
+      gl_FragColor = vec4(mix(backColor, frontColor, smoothstep(0.0, 0.5, facing)), 1.0);
+    }
+  `
+);
+
+// Extend THREE with the custom material
+extend({ FrontFaceMaterial });
+
 function Card({ children, ...props }) {
   const transmissionProps = useControls("Transmission Material", {
-    backside: true,
+    backside: false,
     backsideThickness: { value: -0.25, min: -1, max: 1, step: 0.01 },
     backsideRoughness: { value: 0.3, min: 0, max: 1, step: 0.01 },
     envMapIntensity: { value: 0.25, min: 0, max: 1, step: 0.01 },
@@ -112,7 +123,10 @@ export default function App() {
     bevelThickness: { value: 0.02, min: 0, max: 0.1, step: 0.001 },
     bevelSegments: { value: 5, min: 1, max: 10, step: 1 },
     height: { value: 0.2, min: 0, max: 1, step: 0.01 },
+    frontColor: "#0000ff",
+    backColor: "#ffffff",
   });
+  const frontFaceMaterialRef = useRef();
 
   return (
     <>
@@ -152,7 +166,11 @@ export default function App() {
           <Card>
             <Text3D font="./helvetiker_regular.typeface.json" {...textProps}>
               cv
-              <meshBasicMaterial color="white" />
+              <frontFaceMaterial
+                ref={frontFaceMaterialRef}
+                frontColor={new THREE.Color(textProps.frontColor)}
+                backColor={new THREE.Color(textProps.backColor)}
+              />
             </Text3D>
           </Card>
           <Floor />
