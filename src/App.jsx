@@ -6,7 +6,7 @@ export default function App() {
   return (
     <div>
       <div className="mask-container">
-        <Canvas>
+        <Canvas camera={{ position: [0, 0, 1], fov: 75 }}>
           <OrbitControls />
           <Bg />
         </Canvas>
