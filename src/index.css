@@ -1,105 +1,13 @@
-html,
 body,
-#root {
-  position: fixed;
-  top: 0;
-  left: 0;
+html {
+  margin: 0;
+  padding: 0;
   width: 100%;
   height: 100%;
-  background: ivory;
-}
-
-body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 9999;
-  pointer-events: none;
-
-  /* Existing vertical lines */
-  background-image: 
-    /* New horizontal lines */ repeating-linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.1) 0px,
-    rgba(0, 0, 0, 0.1) 1px,
-    transparent 1px,
-    transparent calc((100% - 11px) / 8 + 1px)
-  );
-
-  /* Adjust the background-size if needed */
-  background-size: 100% 100%;
-}
-
-.grid-container {
-  padding-right: 2.1875rem;
-  padding-left: 2.1875rem;
-  max-width: 90rem;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.grid-x {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-flow: row wrap;
-  flex-flow: row wrap;
-}
-.cell {
-  -ms-flex: 0 0 auto;
-  flex: 0 0 auto;
-  min-height: 0px;
-  min-width: 0px;
-  width: 100%;
-}
-.grid-x > .small-1 {
-  -ms-flex-preferred-size: auto;
-  flex-basis: auto;
-}
-.grid-x > .small-1 {
-  -ms-flex: 0 0 auto;
-  flex: 0 0 auto;
-}
-.grid-x > .small-1 {
-  width: 8.33333%;
-}
-.grid-margin-x {
-  margin-left: -0.625rem;
-  margin-right: -0.625rem;
-  justify-content: center;
-}
-
-.grid-margin-x > .cell {
-  width: calc(100% - 1.25rem);
-  margin-left: 0.625rem;
-  margin-right: 0.625rem;
-}
-
-.grid-margin-x > .small-1 {
-  width: calc(8.33333% - 1.25rem);
-}
-.grid-overlay {
-  position: relative;
-  z-index: 1000;
-}
-.grid-overlay .grid {
-  top: 0;
-  left: 0;
-  z-index: -1;
-  position: fixed;
-  width: 100%;
-  height: 0;
-  transition: all 1.7s;
   overflow: hidden;
 }
-.grid-overlay .cell {
-  height: 100vh;
-  text-align: center;
-  border-left: 1px solid #e000863a;
-  border-right: 1px solid #e000863a;
-}
-.grid-overlay .grid {
+
+canvas {
+  width: 100%;
   height: 100%;
 }
