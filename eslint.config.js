@@ -34,6 +34,7 @@ export default [
         { allowConstantExport: true },
       ],
       "react/prop-types": "off", // Turn off prop type checking
+      "react/no-unknown-property": "off",
     },
   },
 ];
