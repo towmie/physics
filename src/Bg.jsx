@@ -14,8 +14,8 @@ function Bg() {
 
   const { bigElevation, bigFrequencyX, bigFrequencyY } = useControls({
     bigElevation: { value: 0.2, min: 0, max: 1, step: 0.01 },
-    bigFrequencyX: { value: 4, min: 0, max: 10, step: 0.1 },
-    bigFrequencyY: { value: 1.5, min: 0, max: 10, step: 0.1 },
+    bigFrequencyX: { value: 3, min: 0, max: 10, step: 0.1 },
+    bigFrequencyY: { value: 2, min: 0, max: 10, step: 0.1 },
   });
 
   useFrame((state) => {
@@ -27,7 +27,7 @@ function Bg() {
   return (
     <>
       <mesh>
-        <planeGeometry args={[10, 10, 256, 256]} />
+        <planeGeometry args={[2, 2, 256, 256]} />
         <shaderMaterial
           ref={shaderRef}
           fragmentShader={fragmentShader}
