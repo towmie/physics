@@ -1,5 +1,49 @@
-import { useState } from "react";
 import styled from "styled-components";
+import { navItems } from "../data";
+import Container from "../ui/Container";
+import HeaderContent from "../ui/HeaderContent";
+
+const NavItem = styled.a`
+  margin: 1rem 0;
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+
+  &:nth-child(5),
+  &:nth-child(1) {
+    opacity: 0.5;
+    font-size: 3rem;
+  }
+
+  &:nth-child(2),
+  &:nth-child(4) {
+    opacity: 0.7;
+    font-size: 4rem;
+  }
+
+  &:nth-child(3) {
+    font-size: 5rem;
+  }
+`;
+
+const HeaderWrapper = styled.div`
+  padding: 1.5rem 1rem;
+  border-bottom: 1px solid #fff;
+`;
+
+const StyledMenuList = styled.ul`
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
 
 const StyledMenu = styled.nav`
   position: absolute;
@@ -7,109 +51,34 @@ const StyledMenu = styled.nav`
   right: 0;
   top: 0;
   height: 100vh;
-  max-width: 300px;
   width: 100%;
-  background-color: #fff;
-  transition: transform 0.3s;
 
+  transition: transform 0.6s cubic-bezier(0.645, 0.045, 0.355, 0.9);
+  background-color: #ef281d;
+  z-index: 9;
   &.active {
     transform: translateX(0);
   }
 `;
 
-const StyledMenuButton = styled.button`
-  position: relative;
-  width: 48px;
-  height: 48px;
-  display: block;
-  padding: 1rem 0.5rem;
-  cursor: pointer;
-  background-color: transparent;
-  border: none;
-  box-shadow: none;
-  -webkit-appearance: none;
-  order: 1;
-
-  & span {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 0;
-    display: block;
-    pointer-events: none;
-    width: 24px;
-    &,
-    &:before,
-    &:after {
-      height: 2px;
-      background-color: #fff;
-      transition: background-color 0.3s, transform 0.3s;
-    }
-
-    &:before,
-    &:after {
-      position: absolute;
-      right: 0;
-      content: "";
-      width: 48px;
-    }
-
-    &:before {
-      top: -7px;
-    }
-
-    &:after {
-      top: 7px;
-    }
-  }
-
-  &.active {
-    & span {
-      background-color: transparent;
-      transition: background-color 0.1s ease-out;
-
-      &:before,
-      &:after {
-        top: 0;
-      }
-
-      &:before {
-        transform: rotate(45deg);
-      }
-
-      &:after {
-        transform: rotate(-45deg);
-      }
-    }
-  }
-`;
-
-function Menu() {
-  const [isActive, setIsActive] = useState(false);
-
+function Menu({ isActive, setIsActive }) {
   return (
     <>
-      <StyledMenuButton
-        className={isActive ? "active" : ""}
-        onClick={() => setIsActive(!isActive)}
-      >
-        <span></span>
-      </StyledMenuButton>
       <StyledMenu className={isActive ? "active" : ""}>
-        <ul>
-          <li>
-            <a href="#">Home</a>
-          </li>
-          <li>
-            <a href="#">Home</a>
-          </li>
-          <li>
-            <a href="#">Home</a>
-          </li>
-          <li>
-            <a href="#">Home</a>
-          </li>
-        </ul>
+        <HeaderWrapper>
+          <Container>
+            <HeaderContent isActive={isActive} setIsActive={setIsActive} />
+          </Container>
+        </HeaderWrapper>
+        <Container>
+          <StyledMenuList>
+            {navItems.map((item) => (
+              <NavItem href={item.link} key={item.name} data-text={item.name}>
+                {item.name}
+              </NavItem>
+            ))}
+          </StyledMenuList>
+        </Container>
       </StyledMenu>
     </>
   );
